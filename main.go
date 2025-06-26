@@ -2,13 +2,20 @@ package main
 
 import (
 	"e-novel/config"
+	"e-novel/db/seeders"
 	"e-novel/router"
+	"flag"
 	"fmt"
+	"os"
 
 	"github.com/gofiber/fiber/v2"
 )
 
 func main() {
+	seed := flag.Bool("seed", false, "seed")
+	flag.Parse()
+
+
 	config.LoadConfig()
 	db := config.ConnectDB()
 
@@ -22,12 +29,18 @@ func main() {
 		panic(err)
 	}
 
-	authController := config.DepedencyInjection(db)
+	if *seed {
+		seeders.Seed(db)
+		fmt.Println("Seeder Buku berhasil dijalankan!")
+		os.Exit(0)
+	}
+
+	authController, userController := config.DepedencyInjection(db)
 
 	app := fiber.New()
 	fmt.Println("success")
 
-	router.SetUpRoutes(app,authController)
+	router.SetUpRoutes(app,authController, userController)
 
 	err = app.Listen(":3000")
 	if err != nil {

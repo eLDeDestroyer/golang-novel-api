@@ -38,7 +38,7 @@ func AuthMiddleware() fiber.Handler {
 			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "unauthorized 4"})
 		}
 
-		c.Locals("userId", uint(claims["id"].(float64)))
+		c.Locals("id", uint(claims["id"].(float64)))
 		return c.Next()
 	}
 }
