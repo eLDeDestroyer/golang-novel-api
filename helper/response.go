@@ -13,7 +13,7 @@ func SuccessResponse(ctx *fiber.Ctx, data interface{}, message string) error {
 func ErrorResponse(ctx *fiber.Ctx, err error, message string) error {
 	return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 		"success": false,
-		"error":   err,
+		"error":   err.Error(),
 		"message": message,
 	})
 }

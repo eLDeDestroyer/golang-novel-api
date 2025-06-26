@@ -8,7 +8,14 @@ import (
 )
 
 type AuthControllerImpl struct {
-	authController services.AuthService
+	authService services.AuthService
+}
+
+
+func NewAuthControllerImpl(authService services.AuthService) *AuthControllerImpl {
+	return &AuthControllerImpl{
+		authService: authService,
+	}
 }
 
 func (controller *AuthControllerImpl) LoginController(ctx *fiber.Ctx) error {
@@ -22,7 +29,7 @@ func (controller *AuthControllerImpl) LoginController(ctx *fiber.Ctx) error {
 		return helper.ErrorResponse(ctx, err, "fails parser")
 	}
 
-	data, err := controller.authController.LoginService(Login.Username, Login.Password)
+	data, err := controller.authService.LoginService(Login.Username, Login.Password)
 	if err != nil {
 		return helper.ErrorResponse(ctx, err, "fails login")
 	}
@@ -38,10 +45,10 @@ func (controller *AuthControllerImpl) RegisterController(ctx *fiber.Ctx) error {
 		return helper.ErrorResponse(ctx, err, "fails body parser")
 	}
 
-	err = controller.authController.RegisterService(&user)
+	err = controller.authService.RegisterService(&user)
 	if err != nil {
 		return helper.ErrorResponse(ctx, err, "fails register service")
 	}
 
-	return helper.SuccessResponse(ctx, token, "success")
+	return helper.SuccessResponse(ctx, "", "success")
 }

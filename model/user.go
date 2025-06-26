@@ -5,5 +5,4 @@ type User struct {
 	Username  string `json:"username" gorm:"column:username"`
 	Name      string `json:"name" gorm:"column:name"`
 	Password  string `json:"password" gorm:"column:password"`
-	IsPremium bool   `json:"is_premium" gorm:"column:is_premium"`
 }

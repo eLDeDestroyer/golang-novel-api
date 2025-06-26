@@ -12,6 +12,15 @@ type AuthServiceImpl struct {
 	authRepository repositories.AuthRepository
 }
 
+
+
+func NewAuthServiceImpl(authRepository repositories.AuthRepository) *AuthServiceImpl {
+	return &AuthServiceImpl{
+		authRepository: authRepository,
+	}
+}
+
+
 func (service *AuthServiceImpl) LoginService(username string, password string) (*dto.ResponseLogin, error) {
 	var response dto.ResponseLogin
 
@@ -43,6 +52,5 @@ func (service *AuthServiceImpl) RegisterService(user *model.User) error {
 	}
 
 	user.Password = string(hashPassword)
-	user.IsPremium = false
 	return service.authRepository.RegisterRepository(user)
 }

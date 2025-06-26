@@ -2,7 +2,9 @@ package main
 
 import (
 	"e-novel/config"
+	"e-novel/router"
 	"fmt"
+
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -20,10 +22,14 @@ func main() {
 		panic(err)
 	}
 
+	authController := config.DepedencyInjection(db)
+
 	app := fiber.New()
 	fmt.Println("success")
 
-	err = app.Listen(":3001")
+	router.SetUpRoutes(app,authController)
+
+	err = app.Listen(":3000")
 	if err != nil {
 		panic(err)
 	}

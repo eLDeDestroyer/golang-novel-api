@@ -9,6 +9,13 @@ type AuthRepositoryImpl struct {
 	db *gorm.DB
 }
 
+
+func NewAuthRepositoryImpl(db *gorm.DB) *AuthRepositoryImpl{
+	return &AuthRepositoryImpl{
+		db: db,
+	}
+}
+
 func (repo *AuthRepositoryImpl) LoginRepository(username string) (*model.User, error) {
 	var user model.User
 	err := repo.db.Table("users").Where("username = ?", username).First(&user).Error
