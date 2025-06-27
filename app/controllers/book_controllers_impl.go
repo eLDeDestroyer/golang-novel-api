@@ -17,6 +17,15 @@ func NewBookControllerImpl(bookService services.BookService) *BookControllerImpl
 	}
 }
 
+func (controller *BookControllerImpl) GetCategories(ctx *fiber.Ctx) error {
+	data, err := controller.bookService.GetCategories()
+	if err != nil {
+		return helper.ErrorResponse(ctx, err, "fails get data")
+	}
+
+	return helper.SuccessResponse(ctx, data, "Success get data")
+}
+
 func (controller *BookControllerImpl) GetRecentBook(ctx *fiber.Ctx) error {
 	data, err := controller.bookService.GetRecentBook()
 	if err != nil {
@@ -28,6 +37,34 @@ func (controller *BookControllerImpl) GetRecentBook(ctx *fiber.Ctx) error {
 
 func (controller *BookControllerImpl) GetBookMostLike(ctx *fiber.Ctx) error {
 	data, err := controller.bookService.GetBookMostLike()
+	if err != nil {
+		return helper.ErrorResponse(ctx, err, "fails get data")
+	}
+
+	return helper.SuccessResponse(ctx, data, "Success get data")
+}
+
+func (controller *BookControllerImpl) GetBookByCategoryId(ctx *fiber.Ctx) error {
+	categoryId, err := ctx.ParamsInt("id")
+	if err != nil {
+		return helper.ErrorResponse(ctx, err, "fails get category id")
+	}
+
+	data, err := controller.bookService.GetBookByCategoryId(categoryId)
+	if err != nil {
+		return helper.ErrorResponse(ctx, err, "fails get data")
+	}
+
+	return helper.SuccessResponse(ctx, data, "Success get data")
+}
+
+func (controller *BookControllerImpl) GetBookDetailById(ctx *fiber.Ctx) error {
+	bookId, err := ctx.ParamsInt("id")
+	if err != nil {
+		return helper.ErrorResponse(ctx, err, "fails get category id")
+	}
+
+	data, err := controller.bookService.GetBookDetailById(bookId)
 	if err != nil {
 		return helper.ErrorResponse(ctx, err, "fails get data")
 	}

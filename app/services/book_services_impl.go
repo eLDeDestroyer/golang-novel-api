@@ -2,6 +2,7 @@ package services
 
 import (
 	"e-novel/app/repositories"
+	"e-novel/model"
 	"e-novel/model/dto"
 	"fmt"
 )
@@ -14,6 +15,15 @@ func NewBookServiceImpl(bookRepository repositories.BookRepository) *BookService
 	return &BookServiceImpl{
 		bookRepository: bookRepository,
 	}
+}
+
+func (service *BookServiceImpl) GetCategories()([]*model.Category, error) {
+	data , err := service.bookRepository.GetCategories()
+	if err != nil {
+		return nil, err
+	}
+
+	return data, nil
 }
 
 func (service *BookServiceImpl) GetRecentBook() ([]*dto.BookResponseUser, error) {
@@ -49,9 +59,6 @@ func (service *BookServiceImpl) GetRecentBook() ([]*dto.BookResponseUser, error)
 	return datas, nil
 }
 
-
-
-
 func (service *BookServiceImpl) GetBookMostLike() ([]*dto.BookResponseUser, error) {
 	dataBook, err := service.bookRepository.GetBookMostLike()
 	if err != nil {
@@ -83,4 +90,73 @@ func (service *BookServiceImpl) GetBookMostLike() ([]*dto.BookResponseUser, erro
 	}
 
 	return datas, nil
+}
+
+func (service *BookServiceImpl) GetBookByCategoryId(id int) ([]*dto.BookResponseUser, error) {
+	dataBook, err := service.bookRepository.GetBookByCategoryId(id)
+	if err != nil {
+		return nil, err
+	}
+
+	if len(dataBook) == 0 {
+		return nil, fmt.Errorf("fails ")
+	}
+
+	datas := []*dto.BookResponseUser{}
+
+	for _, row := range dataBook {
+		data := dto.BookResponseUser{
+			Id:          int(row["id"].(int64)),
+			Title:       row["title"].(string),
+			Description: row["description"].(string),
+			ImagePath:   row["image_path"].(string),
+			PageCount: int(row["page_count"].(int64)),
+		}
+
+		datas = append(datas, &data)
+	}
+
+	return datas, nil
+}
+
+
+func (service *BookServiceImpl) GetBookDetailById(id int) (*dto.ResponseBookDetail, error) {
+	bookDetail, err := service.bookRepository.GetBookDetailById(id)
+	pageCount,err := service.bookRepository.GetPageCountBook(id) 
+	seenCount, err := service.bookRepository.GetSeenCountBook(id)
+	likeCount, err := service.bookRepository.GetLikeCountBook(id)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if len(bookDetail) == 0 {
+		return nil, fmt.Errorf("error le")
+	}
+
+	datas := &dto.ResponseBookDetail{
+		Name: bookDetail[0]["name"].(string),
+		Title: bookDetail[0]["title"].(string),
+		Description: bookDetail[0]["description"].(string),
+		ImagePath: bookDetail[0]["image_path"].(string),
+		Action: dto.ActionResponseBookDetail{
+			Seen: seenCount,
+			Like: likeCount,
+			Page: pageCount,
+		},
+		Pages: []dto.PagesResponseBookDetail{},
+	}
+
+	for _, row := range bookDetail {
+		data := dto.PagesResponseBookDetail{
+			Id: int(row["id"].(int64)),
+			Page: int(row["page"].(int64)),
+			Text: row["text"].(string),
+		}
+
+		datas.Pages= append(datas.Pages, data)
+	}
+
+	return datas, nil
+
 }

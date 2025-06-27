@@ -10,4 +10,6 @@ func Seed(db *gorm.DB) {
 	SeedBook(db)
 	PageSeeder(db)
 	SeedLike(db)
+	SeedCategory(db)
+	SeedBookCategory(db)
 }

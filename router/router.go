@@ -17,8 +17,14 @@ func SetUpRoutes(app *fiber.App, authController controllers.AuthController, user
 	auth.Get("/user", userController.GetMeController)
 	auth.Get("/user/:username", userController.GetUserController)
 
+	auth.Get("/categories", bookController.GetCategories)
+
 	auth.Get("/book/new", bookController.GetRecentBook)
 	auth.Get("/book/like", bookController.GetBookMostLike)
+	auth.Get("/book/:id", bookController.GetBookByCategoryId)
+
+	auth.Get("/book/detail/:id", bookController.GetBookDetailById)
+
 
 
 }
