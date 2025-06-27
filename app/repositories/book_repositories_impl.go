@@ -3,7 +3,6 @@ package repositories
 import (
 	"e-novel/model"
 
-	"github.com/davecgh/go-spew/spew"
 	"gorm.io/gorm"
 )
 
@@ -17,7 +16,7 @@ func NewBookRepositoryImpl(db *gorm.DB) *BookRepositoryImpl {
 	}
 }
 
-func (repo *BookRepositoryImpl) GetCategories()([]*model.Category, error) {
+func (repo *BookRepositoryImpl) GetCategories() ([]*model.Category, error) {
 	var data []*model.Category
 
 	err := repo.db.Table("categories").Find(&data).Error
@@ -60,8 +59,6 @@ func (repo *BookRepositoryImpl) GetLikeCountBook(id int) (int, error) {
 
 	return int(likeCount), nil
 }
-
-
 
 func (repo *BookRepositoryImpl) GetRecentBook() ([]map[string]interface{}, error) {
 	var data []map[string]interface{}
@@ -107,7 +104,6 @@ func (repo *BookRepositoryImpl) GetBookByCategoryId(id int) ([]map[string]interf
 
 	return user, nil
 }
-
 
 func (repo *BookRepositoryImpl) GetBookDetailById(id int) ([]map[string]interface{}, error) {
 	var data []map[string]interface{}
