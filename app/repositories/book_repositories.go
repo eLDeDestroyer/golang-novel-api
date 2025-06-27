@@ -15,4 +15,7 @@ type BookRepository interface {
 	GetBookMostLike()([]map[string]interface{}, error)
 	GetBookByCategoryId(id int)([]map[string]interface{}, error)
 	GetBookDetailById(id int)([]map[string]interface{}, error)
+
+	AddBook(book *model.Book)(int, error)
+	AddBookCategory(book *model.BookCategory) error
 }

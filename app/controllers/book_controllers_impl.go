@@ -3,6 +3,7 @@ package controllers
 import (
 	"e-novel/app/services"
 	"e-novel/helper"
+	"e-novel/model/dto"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -70,4 +71,45 @@ func (controller *BookControllerImpl) GetBookDetailById(ctx *fiber.Ctx) error {
 	}
 
 	return helper.SuccessResponse(ctx, data, "Success get data")
+}
+
+func (controller *BookControllerImpl) AddBook(ctx *fiber.Ctx) error {
+	var valueStruct dto.RequestBook
+	userId := ctx.Locals("id").(uint)
+
+	err := ctx.BodyParser(&valueStruct)
+	if err != nil {
+		return helper.ErrorResponse(ctx, err, "fails get value")
+	}
+
+	file, err := ctx.FormFile("image")
+	if err != nil {
+		return helper.ErrorResponse(ctx, err, "fails get image")
+	}
+
+
+	bookId, err := controller.bookService.AddBook(ctx, &valueStruct, file, int(userId))
+	if err != nil {
+		return helper.ErrorResponse(ctx, err, "fails add book")
+	}
+
+	return helper.SuccessResponse(ctx, bookId, "success add data")
+
+}
+
+
+func (controller *BookControllerImpl) AddBookCategory(ctx *fiber.Ctx) error {
+	var data dto.RequestBookCategory
+
+	err := ctx.BodyParser(&data)
+	if err != nil {
+		return helper.ErrorResponse(ctx, err, "fails parse data")
+	}
+
+	err = controller.bookService.AddBookCategory(&data)
+	if err != nil {
+		return helper.ErrorResponse(ctx, err, "fails add data book category")
+	}
+
+	return helper.SuccessResponse(ctx, data, "success add data")
 }

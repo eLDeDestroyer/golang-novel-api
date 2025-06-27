@@ -25,6 +25,7 @@ func SetUpRoutes(app *fiber.App, authController controllers.AuthController, user
 
 	auth.Get("/book/detail/:id", bookController.GetBookDetailById)
 
-
+	auth.Post("/book/add", bookController.AddBook)
+	auth.Post("/book/categories/add", bookController.AddBookCategory)
 
 }

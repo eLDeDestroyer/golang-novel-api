@@ -9,4 +9,6 @@ type BookController interface {
 	GetBookByCategoryId(ctx *fiber.Ctx) error
 	GetBookDetailById(ctx *fiber.Ctx) error
 
+	AddBook(ctx *fiber.Ctx) error
+	AddBookCategory(ctx *fiber.Ctx) error
 }

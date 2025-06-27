@@ -5,6 +5,12 @@ import (
 	"e-novel/model"
 	"e-novel/model/dto"
 	"fmt"
+	"math/rand"
+	"mime/multipart"
+	"path/filepath"
+	"time"
+
+	"github.com/gofiber/fiber/v2"
 )
 
 type BookServiceImpl struct {
@@ -17,8 +23,8 @@ func NewBookServiceImpl(bookRepository repositories.BookRepository) *BookService
 	}
 }
 
-func (service *BookServiceImpl) GetCategories()([]*model.Category, error) {
-	data , err := service.bookRepository.GetCategories()
+func (service *BookServiceImpl) GetCategories() ([]*model.Category, error) {
+	data, err := service.bookRepository.GetCategories()
 	if err != nil {
 		return nil, err
 	}
@@ -110,7 +116,7 @@ func (service *BookServiceImpl) GetBookByCategoryId(id int) ([]*dto.BookResponse
 			Title:       row["title"].(string),
 			Description: row["description"].(string),
 			ImagePath:   row["image_path"].(string),
-			PageCount: int(row["page_count"].(int64)),
+			PageCount:   int(row["page_count"].(int64)),
 		}
 
 		datas = append(datas, &data)
@@ -119,10 +125,9 @@ func (service *BookServiceImpl) GetBookByCategoryId(id int) ([]*dto.BookResponse
 	return datas, nil
 }
 
-
 func (service *BookServiceImpl) GetBookDetailById(id int) (*dto.ResponseBookDetail, error) {
 	bookDetail, err := service.bookRepository.GetBookDetailById(id)
-	pageCount,err := service.bookRepository.GetPageCountBook(id) 
+	pageCount, err := service.bookRepository.GetPageCountBook(id)
 	seenCount, err := service.bookRepository.GetSeenCountBook(id)
 	likeCount, err := service.bookRepository.GetLikeCountBook(id)
 
@@ -135,10 +140,10 @@ func (service *BookServiceImpl) GetBookDetailById(id int) (*dto.ResponseBookDeta
 	}
 
 	datas := &dto.ResponseBookDetail{
-		Name: bookDetail[0]["name"].(string),
-		Title: bookDetail[0]["title"].(string),
+		Name:        bookDetail[0]["name"].(string),
+		Title:       bookDetail[0]["title"].(string),
 		Description: bookDetail[0]["description"].(string),
-		ImagePath: bookDetail[0]["image_path"].(string),
+		ImagePath:   bookDetail[0]["image_path"].(string),
 		Action: dto.ActionResponseBookDetail{
 			Seen: seenCount,
 			Like: likeCount,
@@ -149,14 +154,59 @@ func (service *BookServiceImpl) GetBookDetailById(id int) (*dto.ResponseBookDeta
 
 	for _, row := range bookDetail {
 		data := dto.PagesResponseBookDetail{
-			Id: int(row["id"].(int64)),
+			Id:   int(row["id"].(int64)),
 			Page: int(row["page"].(int64)),
 			Text: row["text"].(string),
 		}
 
-		datas.Pages= append(datas.Pages, data)
+		datas.Pages = append(datas.Pages, data)
 	}
 
 	return datas, nil
 
+}
+
+func (service *BookServiceImpl) AddBook(ctx *fiber.Ctx, book *dto.RequestBook, file *multipart.FileHeader, userId int) (int, error) {
+	rand.Seed(time.Now().UnixNano())
+	randomNumber := rand.Intn(99999999)
+
+	ext := 	filepath.Ext(file.Filename)
+	newFileName := fmt.Sprintf("%d%s", randomNumber, ext)
+	locationFile := fmt.Sprintf("uploads/%s", newFileName)
+
+	err := ctx.SaveFile(file, fmt.Sprintf("./%s", locationFile))
+	if err != nil {
+		return 0, err
+	}
+
+	data := model.Book{
+		Title:       book.Title,
+		Description: book.Description,
+		ImagePath:   locationFile,
+		UserId:      userId,
+	}
+
+	bookId, err := service.bookRepository.AddBook(&data)
+	if err != nil {
+		return 0, err
+	}
+
+	return bookId, nil
+}
+
+
+func (service *BookServiceImpl) AddBookCategory(book *dto.RequestBookCategory) error {
+	for _, row := range book.CategoryId {
+		data := model.BookCategory{
+			BookId: book.BookId,
+			CategoryId: row,
+		}
+
+		err := service.bookRepository.AddBookCategory(&data)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
 }

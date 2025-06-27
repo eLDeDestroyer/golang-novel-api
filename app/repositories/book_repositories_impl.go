@@ -129,3 +129,25 @@ func (repo *BookRepositoryImpl) GetBookDetailById(id int) ([]map[string]interfac
 
 	return data, nil
 }
+
+func (repo *BookRepositoryImpl) AddBook(book *model.Book) (int, error) {
+	err := repo.db.Table("books").Create(book).Error
+
+	if err != nil {
+		return 0, err
+	}
+
+	return int(book.Id), nil
+}
+
+
+
+func (repo *BookRepositoryImpl) AddBookCategory(book *model.BookCategory) error {
+	err := repo.db.Table("book_category").Create(book).Error
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
