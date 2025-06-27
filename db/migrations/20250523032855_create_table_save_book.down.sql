@@ -1,1 +1,1 @@
-DROP TABLE IF EXIST save_book;
+DROP TABLE IF EXISTS save_book;

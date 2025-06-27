@@ -11,27 +11,32 @@ func PageSeeder(db *gorm.DB) error {
 		{
 			Page: 1,
 			Text: "text book 1 page 1",
-			BookId: 7,
+			BookId: 1,
 		},
 		{
 			Page: 2,
 			Text: "text book 1 page 2",
-			BookId: 7,
+			BookId: 1,
 		},
 		{
 			Page: 3,
 			Text: "text book 1 page 2",
-			BookId: 7,
+			BookId: 1,
 		},
 		{
 			Page: 1,
 			Text: "text book 2 page 1",
-			BookId: 8,
+			BookId: 2,
 		},
 		{
 			Page: 2,
 			Text: "text book 2 page 2",
-			BookId: 8,
+			BookId: 2,
+		},
+		{
+			Page: 1,
+			Text: "text book 3 page 1",
+			BookId: 3,
 		},
 	}
 

@@ -7,7 +7,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func SetUpRoutes(app *fiber.App, authController controllers.AuthController, userController controllers.UserController)  {
+func SetUpRoutes(app *fiber.App, authController controllers.AuthController, userController controllers.UserController, bookController controllers.BookController) {
 	api := app.Group("/api")
 	auth := app.Group("/api/auth", middleware.AuthMiddleware())
 
@@ -16,5 +16,9 @@ func SetUpRoutes(app *fiber.App, authController controllers.AuthController, user
 
 	auth.Get("/user", userController.GetMeController)
 	auth.Get("/user/:username", userController.GetUserController)
+
+	auth.Get("/book/new", bookController.GetRecentBook)
+	auth.Get("/book/like", bookController.GetBookMostLike)
+
 
 }
