@@ -15,7 +15,6 @@ func main() {
 	seed := flag.Bool("seed", false, "seed")
 	flag.Parse()
 
-
 	config.LoadConfig()
 	db := config.ConnectDB()
 
@@ -35,12 +34,12 @@ func main() {
 		os.Exit(0)
 	}
 
-	authController, userController := config.DepedencyInjection(db)
+	authController, userController, pageController := config.DepedencyInjection(db)
 
 	app := fiber.New()
 	fmt.Println("success")
 
-	router.SetUpRoutes(app,authController, userController)
+	router.SetUpRoutes(app, authController, userController, pageController)
 
 	err = app.Listen(":3000")
 	if err != nil {

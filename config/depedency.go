@@ -9,7 +9,7 @@ import (
 )
 
 
-func DepedencyInjection(db *gorm.DB) (*controllers.AuthControllerImpl, *controllers.UserControllerImpl) {
+func DepedencyInjection(db *gorm.DB) (*controllers.AuthControllerImpl, *controllers.UserControllerImpl, *controllers.PageControllerImpl) {
 	authRepository := repositories.NewAuthRepositoryImpl(db)
 	authService := services.NewAuthServiceImpl(authRepository)
 	authController := controllers.NewAuthControllerImpl(authService)
@@ -18,5 +18,9 @@ func DepedencyInjection(db *gorm.DB) (*controllers.AuthControllerImpl, *controll
 	userService := services.NewUserServiceImpl(userRepository)
 	userController := controllers.NewUserControllerImpl(userService)
 
-	return authController, userController
+	pageRepository := repositories.NewPageRepositoryImpl(db)
+	pageService := services.NewPageServiceImpl(pageRepository)
+	pageController := controllers.NewPageControllerImpl(pageService)
+
+	return authController, userController, pageController
 }
