@@ -34,13 +34,13 @@ func main() {
 		os.Exit(0)
 	}
 
-	authController, userController, bookController := config.DepedencyInjection(db)
+	authController, userController, bookController, pageController := config.DepedencyInjection(db)
 
 	app := fiber.New()
 	app.Static("/uploads", "./uploads")
 	fmt.Println("success")
 
-	router.SetUpRoutes(app, authController, userController, bookController)
+	router.SetUpRoutes(app, authController, userController, bookController, pageController)
 
 	err = app.Listen(":3000")
 	if err != nil {

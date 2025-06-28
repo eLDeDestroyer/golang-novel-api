@@ -7,7 +7,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func SetUpRoutes(app *fiber.App, authController controllers.AuthController, userController controllers.UserController, bookController controllers.BookController) {
+func SetUpRoutes(app *fiber.App, authController controllers.AuthController, userController controllers.UserController, bookController controllers.BookController, pageController controllers.PageController) {
 	api := app.Group("/api")
 	auth := app.Group("/api/auth", middleware.AuthMiddleware())
 
@@ -32,7 +32,9 @@ func SetUpRoutes(app *fiber.App, authController controllers.AuthController, user
 
 	auth.Patch("/book/update/:book_id", bookController.UpdateBook)
 	auth.Post("/book/categories/update", bookController.UpdateBookCategory)
-
 	auth.Delete("/book/delete/:book_id", bookController.DeleteBook)
 
+	auth.Get("/book/page/:book_id/:page", pageController.GetPageBook)
+	auth.Post("/book/page/add", pageController.AddPageBook)
+	auth.Patch("/book/page/update", pageController.UpdatePageBook)
 }
