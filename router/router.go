@@ -28,4 +28,10 @@ func SetUpRoutes(app *fiber.App, authController controllers.AuthController, user
 	auth.Post("/book/add", bookController.AddBook)
 	auth.Post("/book/categories/add", bookController.AddBookCategory)
 
+	auth.Patch("/book/update/:book_id", bookController.UpdateBook)
+	auth.Post("/book/categories/update", bookController.UpdateBookCategory)
+
+	auth.Delete("/book/delete/:book_id", bookController.DeleteBook)
+
+
 }

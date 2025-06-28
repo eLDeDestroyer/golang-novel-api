@@ -60,6 +60,15 @@ func (repo *BookRepositoryImpl) GetLikeCountBook(id int) (int, error) {
 	return int(likeCount), nil
 }
 
+func (repo *BookRepositoryImpl) DeleteBookCategory(bookId int) error {
+	err := repo.db.Table("book_category").Where("book_id = ?", bookId).Delete(&model.Book{}).Error
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (repo *BookRepositoryImpl) GetRecentBook() ([]map[string]interface{}, error) {
 	var data []map[string]interface{}
 
@@ -144,6 +153,26 @@ func (repo *BookRepositoryImpl) AddBook(book *model.Book) (int, error) {
 
 func (repo *BookRepositoryImpl) AddBookCategory(book *model.BookCategory) error {
 	err := repo.db.Table("book_category").Create(book).Error
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (repo *BookRepositoryImpl) UpdateBook(book *model.Book) (int, error) {
+	err := repo.db.Table("books").Where("id = ?", book.Id).Updates(book).Error
+
+	if err != nil {
+		return 0, err
+	}
+
+	return int(book.Id), nil
+}
+
+func (repo *BookRepositoryImpl) DeleteBook(id int) error {
+	err := repo.db.Table("books").Where("id = ?", id).Delete(&model.Book{}).Error
 
 	if err != nil {
 		return err

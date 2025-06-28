@@ -11,4 +11,10 @@ type BookController interface {
 
 	AddBook(ctx *fiber.Ctx) error
 	AddBookCategory(ctx *fiber.Ctx) error
+
+	UpdateBook(ctx *fiber.Ctx) error
+	UpdateBookCategory(ctx *fiber.Ctx) error
+
+	DeleteBook(ctx *fiber.Ctx) error
+
 }

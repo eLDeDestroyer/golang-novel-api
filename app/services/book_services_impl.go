@@ -170,7 +170,7 @@ func (service *BookServiceImpl) AddBook(ctx *fiber.Ctx, book *dto.RequestBook, f
 	rand.Seed(time.Now().UnixNano())
 	randomNumber := rand.Intn(99999999)
 
-	ext := 	filepath.Ext(file.Filename)
+	ext := filepath.Ext(file.Filename)
 	newFileName := fmt.Sprintf("%d%s", randomNumber, ext)
 	locationFile := fmt.Sprintf("uploads/%s", newFileName)
 
@@ -194,11 +194,10 @@ func (service *BookServiceImpl) AddBook(ctx *fiber.Ctx, book *dto.RequestBook, f
 	return bookId, nil
 }
 
-
 func (service *BookServiceImpl) AddBookCategory(book *dto.RequestBookCategory) error {
 	for _, row := range book.CategoryId {
 		data := model.BookCategory{
-			BookId: book.BookId,
+			BookId:     book.BookId,
 			CategoryId: row,
 		}
 
@@ -206,6 +205,65 @@ func (service *BookServiceImpl) AddBookCategory(book *dto.RequestBookCategory) e
 		if err != nil {
 			return err
 		}
+	}
+
+	return nil
+}
+
+func (service *BookServiceImpl) UpdateBook(ctx *fiber.Ctx, book *dto.RequestBook, file *multipart.FileHeader, userId int, bookId int) (int, error) {
+	rand.Seed(time.Now().UnixNano())
+	randomNumber := rand.Intn(99999999)
+
+	ext := filepath.Ext(file.Filename)
+	newFileName := fmt.Sprintf("%d%s", randomNumber, ext)
+	locationFile := fmt.Sprintf("uploads/%s", newFileName)
+
+	err := ctx.SaveFile(file, fmt.Sprintf("./%s", locationFile))
+	if err != nil {
+		return 0, err
+	}
+
+	data := model.Book{
+		Id:          bookId,
+		Title:       book.Title,
+		Description: book.Description,
+		ImagePath:   locationFile,
+		UserId:      userId,
+	}
+
+	bookId, err = service.bookRepository.UpdateBook(&data)
+	if err != nil {
+		return 0, err
+	}
+
+	return bookId, nil
+}
+
+func (service *BookServiceImpl) UpdateBookCategory(book *dto.RequestBookCategory) error {
+	err := service.bookRepository.DeleteBookCategory(book.BookId)
+	if err != nil {
+		return err
+	}
+
+	for _, row := range book.CategoryId {
+		data := model.BookCategory{
+			BookId:     book.BookId,
+			CategoryId: row,
+		}
+
+		err := service.bookRepository.AddBookCategory(&data)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (service *BookServiceImpl) DeleteBook(id int) error {
+	err := service.bookRepository.DeleteBook(id)
+	if err != nil {
+		return err
 	}
 
 	return nil

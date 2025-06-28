@@ -10,6 +10,7 @@ type BookRepository interface {
 	GetPageCountBook(id int)(int, error)
 	GetSeenCountBook(id int)(int, error)
 	GetLikeCountBook(id int)(int, error)
+	DeleteBookCategory(bookId int)error
 
 	GetRecentBook()([]map[string]interface{}, error)
 	GetBookMostLike()([]map[string]interface{}, error)
@@ -18,4 +19,7 @@ type BookRepository interface {
 
 	AddBook(book *model.Book)(int, error)
 	AddBookCategory(book *model.BookCategory) error
+
+	UpdateBook(book *model.Book) (int , error)
+	DeleteBook(id int) error
 }

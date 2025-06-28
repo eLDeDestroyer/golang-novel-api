@@ -17,4 +17,8 @@ type BookService interface {
 
 	AddBook(ctx *fiber.Ctx, book *dto.RequestBook, file *multipart.FileHeader, userId int)(int, error)
 	AddBookCategory(book *dto.RequestBookCategory) error
+
+	UpdateBook(ctx *fiber.Ctx, book *dto.RequestBook, file *multipart.FileHeader, userId int, bookId int)(int, error)
+	UpdateBookCategory(book *dto.RequestBookCategory) error
+	DeleteBook(id int) error
 }	
