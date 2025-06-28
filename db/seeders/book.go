@@ -21,6 +21,12 @@ func SeedBook(db *gorm.DB) {
 			ImagePath: "",
 			UserId: 1,
 		},
+		{
+			Title: "book 3",
+			Description: "",
+			ImagePath: "",
+			UserId: 1,
+		},
 	}
 
 
