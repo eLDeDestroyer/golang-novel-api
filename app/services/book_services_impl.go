@@ -10,6 +10,7 @@ import (
 	"path/filepath"
 	"time"
 
+	"github.com/davecgh/go-spew/spew"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -104,6 +105,7 @@ func (service *BookServiceImpl) GetBookByCategoryId(id int) ([]*dto.BookResponse
 		return nil, err
 	}
 
+	spew.Dump(dataBook)
 	if len(dataBook) == 0 {
 		return nil, fmt.Errorf("fails ")
 	}

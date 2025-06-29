@@ -3,5 +3,5 @@ CREATE TABLE pages (
     page int NOT NULL,
     text text NOT NULL,
     book_id int,
-    FOREIGN KEY (book_id) REFERENCES books(id)
+    FOREIGN KEY (book_id) REFERENCES books(id) ON DELETE CASCADE
 ) ENGINE = InnoDB;

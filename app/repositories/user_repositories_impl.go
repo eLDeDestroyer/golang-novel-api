@@ -143,7 +143,7 @@ func (repo *UserRepositoryImpl) CheckBookLikeUser(action *dto.RequestAction) (bo
 	var dataCont int64
 	var data bool
 
-	err := repo.db.Table("likes").Where("book_id = ? AND user_id = ?", action.BookId, action.BookId).Count(&dataCont).Error
+	err := repo.db.Table("likes").Where("book_id = ? AND user_id = ?", action.BookId, action.UserId).Count(&dataCont).Error
 
 	if err != nil {
 		return false, err
@@ -164,7 +164,7 @@ func (repo *UserRepositoryImpl) CheckBookSaveUser(action *dto.RequestAction) (bo
 	var dataCont int64
 	var data bool
 
-	err := repo.db.Table("save_book").Where("book_id = ? AND user_id = ?", action.BookId, action.BookId).Count(&dataCont).Error
+	err := repo.db.Table("save_book").Where("book_id = ? AND user_id = ?", action.BookId, action.UserId).Count(&dataCont).Error
 
 	if err != nil {
 		return false, err
@@ -181,7 +181,7 @@ func (repo *UserRepositoryImpl) CheckBookSaveUser(action *dto.RequestAction) (bo
 
 
 func (repo *UserRepositoryImpl) DeleteBookLikeUser(action *dto.RequestAction) error {
-	err := repo.db.Table("likes").Where("book_id = ? AND user_id = ?", action.BookId, action.BookId).Delete(&model.Action{}).Error
+	err := repo.db.Table("likes").Where("book_id = ? AND user_id = ?", action.BookId, action.UserId).Delete(&model.Action{}).Error
 
 	if err != nil {
 		return err
@@ -191,7 +191,7 @@ func (repo *UserRepositoryImpl) DeleteBookLikeUser(action *dto.RequestAction) er
 }
 
 func (repo *UserRepositoryImpl) DeleteBookSaveUser(action *dto.RequestAction) error {
-	err := repo.db.Table("save_book").Where("book_id = ? AND user_id = ?", action.BookId, action.BookId).Delete(&model.Action{}).Error
+	err := repo.db.Table("save_book").Where("book_id = ? AND user_id = ?", action.BookId, action.UserId).Delete(&model.Action{}).Error
 
 	if err != nil {
 		return err

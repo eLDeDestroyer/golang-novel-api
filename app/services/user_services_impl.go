@@ -32,24 +32,31 @@ func (service *UserServiceImpl) GetMeService(id int) (*dto.ResponseUser, error) 
 		Books:    []dto.BookResponseUser{},
 	}
 
-	for _, row := range userData {
-		bookId := int(row["id"].(int64))
-		pageCount, err := service.userRepository.GetPageCountByIdBook(bookId)
-
-		if err != nil {
-			return nil, err
+	if userData[0]["id"] != nil {		
+		for _, row := range userData {
+			bookId := int(row["id"].(int64))
+			pageCount, err := service.userRepository.GetPageCountByIdBook(bookId)
+	
+			if err != nil {
+				return nil, err
+			}
+	
+			book := dto.BookResponseUser{
+				Id:          bookId,
+				Title:       row["title"].(string),
+				ImagePath:   row["image_path"].(string),
+				Description: row["description"].(string),
+				PageCount:   pageCount,
+			}
+	
+			data.Books = append(data.Books, book)
 		}
-
-		book := dto.BookResponseUser{
-			Id:          bookId,
-			Title:       row["title"].(string),
-			ImagePath:   row["image_path"].(string),
-			Description: row["description"].(string),
-			PageCount:   pageCount,
-		}
-
-		data.Books = append(data.Books, book)
 	}
+
+	if userData[0]["id"] == nil {
+		data.Books = nil
+	}
+
 
 	return &data, nil
 }
