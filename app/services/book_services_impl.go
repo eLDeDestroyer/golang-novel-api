@@ -33,6 +33,52 @@ func (service *BookServiceImpl) GetCategories() ([]*model.Category, error) {
 	return data, nil
 }
 
+func (service *BookServiceImpl) GetBookByUsername(title string) ([]*dto.BookResponseUser, error) {
+	var dataBook []map[string]interface{}
+	var errData error
+
+	if title == "" {
+		rawData, err := service.bookRepository.GetAllBook()
+		dataBook = rawData
+		errData = err
+		fmt.Println("text")
+	} else {			
+		rawData, err := service.bookRepository.GetBookByUsername(title)
+		dataBook = rawData
+		errData = err
+	}
+
+	if errData != nil {
+		return nil, errData
+	}
+
+	if len(dataBook) == 0 {
+		return nil, fmt.Errorf("fails ")
+	}
+
+	datas := []*dto.BookResponseUser{}
+
+	for _, row := range dataBook {
+		bookId := int(row["id"].(int32))
+		pageCount, err := service.bookRepository.GetPageCountBook(bookId)
+		if err != nil {
+			return nil, err
+		}
+
+		data := &dto.BookResponseUser{
+			Id:          bookId,
+			Title:       row["title"].(string),
+			Description: row["description"].(string),
+			ImagePath:   row["image_path"].(string),
+			PageCount:   pageCount,
+		}
+
+		datas = append(datas, data)
+	}
+
+	return datas, nil
+}
+
 func (service *BookServiceImpl) GetRecentBook() ([]*dto.BookResponseUser, error) {
 	dataBook, err := service.bookRepository.GetRecentBook()
 	if err != nil {

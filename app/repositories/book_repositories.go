@@ -12,6 +12,8 @@ type BookRepository interface {
 	GetLikeCountBook(id int)(int, error)
 	DeleteBookCategory(bookId int)error
 
+	GetBookByUsername(title string) ([]map[string]interface{}, error)
+	GetAllBook() ([]map[string]interface{}, error)
 	GetRecentBook()([]map[string]interface{}, error)
 	GetBookMostLike()([]map[string]interface{}, error)
 	GetBookByCategoryId(id int)([]map[string]interface{}, error)

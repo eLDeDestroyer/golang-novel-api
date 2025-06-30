@@ -10,6 +10,8 @@ import (
 
 type BookService interface {
 	GetCategories()([]*model.Category, error)
+
+	GetBookByUsername(title string) ([]*dto.BookResponseUser, error)
 	GetRecentBook() ([]*dto.BookResponseUser, error)
 	GetBookMostLike() ([]*dto.BookResponseUser, error)
 	GetBookByCategoryId(id int) ([]*dto.BookResponseUser, error)

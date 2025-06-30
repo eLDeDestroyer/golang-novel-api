@@ -69,6 +69,28 @@ func (repo *BookRepositoryImpl) DeleteBookCategory(bookId int) error {
 	return nil
 }
 
+func (repo *BookRepositoryImpl) GetBookByUsername(title string) ([]map[string]interface{}, error) {
+	var data []map[string]interface{}
+
+	err := repo.db.Table("books").Where("title LIKE ?", "%"+title+"%").Find(&data).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return data, nil
+}
+
+func (repo *BookRepositoryImpl) GetAllBook() ([]map[string]interface{}, error) {
+	var data []map[string]interface{}
+
+	err := repo.db.Table("books").Find(&data).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return data, nil
+}
+
 func (repo *BookRepositoryImpl) GetRecentBook() ([]map[string]interface{}, error) {
 	var data []map[string]interface{}
 

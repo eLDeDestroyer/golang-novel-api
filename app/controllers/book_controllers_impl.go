@@ -27,6 +27,17 @@ func (controller *BookControllerImpl) GetCategories(ctx *fiber.Ctx) error {
 	return helper.SuccessResponse(ctx, data, "Success get data")
 }
 
+func (controller *BookControllerImpl) GetBookByUsername(ctx *fiber.Ctx) error {
+	title := ctx.Query("title")
+
+	data, err := controller.bookService.GetBookByUsername(title)
+	if err != nil {
+		return helper.ErrorResponse(ctx, err, "fails get data")
+	}
+
+	return helper.SuccessResponse(ctx, data, "Success get data")
+}
+
 func (controller *BookControllerImpl) GetRecentBook(ctx *fiber.Ctx) error {
 	data, err := controller.bookService.GetRecentBook()
 	if err != nil {
@@ -153,7 +164,6 @@ func (controller *BookControllerImpl) UpdateBookCategory(ctx *fiber.Ctx) error {
 
 	return helper.SuccessResponse(ctx, data, "success add data")
 }
-
 
 func (controller *BookControllerImpl) DeleteBook(ctx *fiber.Ctx) error {
 	bookId, err := ctx.ParamsInt("book_id")
