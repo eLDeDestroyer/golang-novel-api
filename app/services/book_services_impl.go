@@ -201,13 +201,24 @@ func (service *BookServiceImpl) GetBookDetailById(id int) (*dto.ResponseBookDeta
 	}
 
 	for _, row := range bookDetail {
-		data := dto.PagesResponseBookDetail{
-			Id:   int(row["id"].(int64)),
-			Page: int(row["page"].(int64)),
-			Text: row["text"].(string),
-		}
+		exists := false
 
-		datas.Pages = append(datas.Pages, data)
+		for _, v := range datas.Pages {
+			if v.Id == int(row["id"].(int64)) {
+				exists = true
+				continue
+			}
+		}
+			
+		if exists == false {			
+			data := dto.PagesResponseBookDetail{
+				Id:   int(row["id"].(int64)),
+				Page: int(row["page"].(int64)),
+				Text: row["text"].(string),
+			}
+	
+			datas.Pages = append(datas.Pages, data)
+		}
 	}
 
 	return datas, nil
