@@ -94,7 +94,7 @@ func (repo *BookRepositoryImpl) GetAllBook() ([]map[string]interface{}, error) {
 func (repo *BookRepositoryImpl) GetRecentBook() ([]map[string]interface{}, error) {
 	var data []map[string]interface{}
 
-	err := repo.db.Table("books").Order("id DESC").Find(&data).Error
+	err := repo.db.Table("books").Order("id DESC").Limit(6).Find(&data).Error
 	if err != nil {
 		return nil, err
 	}
@@ -110,6 +110,7 @@ func (repo *BookRepositoryImpl) GetBookMostLike() ([]map[string]interface{}, err
 		Select("books.id, books.title, books.description, books.image_path, COUNT(likes.book_id) as like_count").
 		Group("books.id, books.title, books.description, books.image_path").
 		Order("like_count DESC").
+		Limit(6).
 		Find(&data).Error
 	if err != nil {
 		return nil, err

@@ -10,7 +10,7 @@ import (
 )
 
 func SeedUser(db *gorm.DB) error {
-	for i := 0; i < 5; i++ {
+	for i := 0; i < 6; i++ {
 
 	password := "12345678"
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)

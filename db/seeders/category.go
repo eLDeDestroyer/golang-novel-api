@@ -2,22 +2,42 @@ package seeders
 
 import (
 	"e-novel/model"
-	"strconv"
+	"fmt"
 
 	"gorm.io/gorm"
 )
 
 func SeedCategory(db *gorm.DB) error {
-	for i := 0; i < 5; i++ {
-		data := model.Category{
-			Category: "category " + strconv.Itoa(i),
-		}
+	data := []model.Category{
+		{
+			Category: "romance",
+		},
+		{
+			Category: "drama",
+		},
+		{
+			Category: "adventure",
+		},
+		{
+			Category: "horror",
+		},
+		{
+			Category: "fantasy",
+		},
+		{
+			Category: "comedy",
+		},
+	}
+	for _, v := range data {
 
-		err := db.Table("categories").Create(&data).Error
+		err := db.Table("categories").Create(&v).Error
 		if err != nil {
 			return err
 		}
 	}
+
+	fmt.Println("succes seed category")
+
 
 	return nil
 }
