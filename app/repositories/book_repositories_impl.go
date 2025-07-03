@@ -128,6 +128,7 @@ func (repo *BookRepositoryImpl) GetBookByCategoryId(id int) ([]map[string]interf
 		Select("books.id,books.title,books.image_path,books.description,COUNT(pages.book_id) as page_count").
 		Group("books.id,books.title,books.image_path,books.description").
 		Where("category_id = ?", id).
+		Limit(6).
 		Find(&user).Error
 
 	if err != nil {
