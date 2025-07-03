@@ -95,9 +95,6 @@ func SeedLike(db *gorm.DB) error {
 			UserId: 2,
 			BookId: 8,
 		},
-
-
-
 		{
 			UserId: 1,
 			BookId: 1,
