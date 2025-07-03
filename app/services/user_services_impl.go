@@ -122,22 +122,53 @@ func (service *UserServiceImpl) GetBookByActionUser(action string, userId int) (
 
 	datas := []*dto.BookResponseUser{}
 
-	for _, row := range resData {
-		bookId := int(row["id"].(int32))
-		pageCount, err := service.userRepository.GetPageCountByIdBook(bookId)
-		if err != nil {
-			return nil, err
+	if action != "histories" {
+		for _, row := range resData {
+			bookId := int(row["id"].(int32))
+			pageCount, err := service.userRepository.GetPageCountByIdBook(bookId)
+			if err != nil {
+				return nil, err
+			}
+	
+			data := dto.BookResponseUser{
+				Id:          bookId,
+				Title:       row["title"].(string),
+				Description: row["description"].(string),
+				ImagePath:   row["image_path"].(string),
+				PageCount:   pageCount,
+			}
+	
+			datas = append(datas, &data)
 		}
+		
+	} else {
 
-		data := dto.BookResponseUser{
-			Id:          bookId,
-			Title:       row["title"].(string),
-			Description: row["description"].(string),
-			ImagePath:   row["image_path"].(string),
-			PageCount:   pageCount,
+		for _, row := range resData {
+			bookId := int(row["id"].(int32))
+			pageCount, err := service.userRepository.GetPageCountByIdBook(bookId)
+			if err != nil {
+				return nil, err
+			}
+
+			exist := false
+			for _, v := range datas {
+				if v.Id == bookId {
+					exist = true
+				}
+			}
+
+			if !exist {
+				data := dto.BookResponseUser{
+					Id:          bookId,
+					Title:       row["title"].(string),
+					Description: row["description"].(string),
+					ImagePath:   row["image_path"].(string),
+					PageCount:   pageCount,
+				}
+		
+				datas = append(datas, &data)
+			}
 		}
-
-		datas = append(datas, &data)
 	}
 
 	return datas, nil
