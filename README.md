@@ -23,6 +23,7 @@ A RESTful API to manage books, users, and categories built using **Golang**, **F
 
 🧭 **ERD Visual Link**  
 [View on DrawSQL](https://drawsql.app/teams/devmare/diagrams/novel)
+
 🌱 **SQL Seeder File**  
 [View Seeder on GitHub](https://github.com/eLDeDestroyer/golang-novel-api/blob/main/file/e_novel.sql)
 
