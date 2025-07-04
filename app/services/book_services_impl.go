@@ -42,7 +42,7 @@ func (service *BookServiceImpl) GetBookByUsername(title string) ([]*dto.BookResp
 		dataBook = rawData
 		errData = err
 		fmt.Println("text")
-	} else {			
+	} else {
 		rawData, err := service.bookRepository.GetBookByUsername(title)
 		dataBook = rawData
 		errData = err
@@ -209,14 +209,14 @@ func (service *BookServiceImpl) GetBookDetailById(id int) (*dto.ResponseBookDeta
 				continue
 			}
 		}
-			
-		if exists == false {			
+
+		if exists == false {
 			data := dto.PagesResponseBookDetail{
 				Id:   int(row["id"].(int64)),
 				Page: int(row["page"].(int64)),
 				Text: row["text"].(string),
 			}
-	
+
 			datas.Pages = append(datas.Pages, data)
 		}
 	}
