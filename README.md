@@ -1,4 +1,4 @@
-# 📚 Book Management API with Go (Fiber + JWT + MySQL)
+# 📚 E-Novel API with Go (Fiber + JWT + MySQL)
 
 A RESTful API to manage books, users, and categories built using **Golang**, **Fiber**, and **JWT** authentication.
 
@@ -18,6 +18,13 @@ A RESTful API to manage books, users, and categories built using **Golang**, **F
 - ✅ Category Assignment
 - ✅ Action (Like, Seen, Page Read) Tracking
 - ✅ Get Book by Title / Category / Popular / Recent
+
+## 🗂️ Project Overview
+
+🧭 **ERD Visual Link**  
+[View on DrawSQL](https://drawsql.app/teams/devmare/diagrams/novel)
+🌱 **SQL Seeder File**  
+[View Seeder on GitHub](https://github.com/eLDeDestroyer/golang-novel-api/blob/main/file/e_novel.sql)
 
 
 # Auth
