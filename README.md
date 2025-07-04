@@ -19,6 +19,7 @@ A RESTful API to manage books, users, and categories built using **Golang**, **F
 - ✅ Action (Like, Seen, Page Read) Tracking
 - ✅ Get Book by Title / Category / Popular / Recent
 
+
 ## 🗂️ Project Overview
 
 🧭 **ERD Visual Link**  
@@ -26,6 +27,8 @@ A RESTful API to manage books, users, and categories built using **Golang**, **F
 
 🌱 **SQL Seeder File**  
 [View Seeder on GitHub](https://github.com/eLDeDestroyer/golang-novel-api/blob/main/file/e_novel.sql)
+
+
 
 
 # Auth
